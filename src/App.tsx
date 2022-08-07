@@ -1,11 +1,14 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/global/Header';
 import { Auth, TodoList } from './pages';
+
+import GlobalStyle from './styles/GlobalStyles';
 import './styles/reset.css';
 
 function App() {
   return (
     <BrowserRouter>
+      <GlobalStyle />
       <div className="App">
         <Header />
         <Routes>
