@@ -1,6 +1,7 @@
+import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { signUp } from '../api/auth';
+import { login, signUp } from '../api/auth';
 import { isEmailValid } from '../utils/isEmailValid';
 import { isPasswordValid } from '../utils/isPasswordValid';
 
@@ -29,13 +30,27 @@ const Auth: React.FC = () => {
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    try {
+      await login(loginValue).then((res) => {
+        Cookies.set('token', res.data.token);
+        console.log(res);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const responseMessage = await signUp(signUpValue);
-    alert(responseMessage);
+    try {
+      await signUp(signUpValue).then((res) => {
+        Cookies.set('token', res.data.token);
+      });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const renderLogin = () => {
