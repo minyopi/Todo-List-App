@@ -1,6 +1,12 @@
 import { useEffect, useState } from 'react';
+import styled from 'styled-components';
+import { signUp } from '../api/auth';
 import { isEmailValid } from '../utils/isEmailValid';
 import { isPasswordValid } from '../utils/isPasswordValid';
+
+const StyledButton = styled.button<{ isValid: boolean }>`
+  cursor: ${({ isValid }) => (isValid ? 'pointer' : 'not-allowed')};
+`;
 
 interface authProps {
   email: string;
@@ -13,21 +19,28 @@ const Auth: React.FC = () => {
   const [isLoginValid, setIsLoginValid] = useState(false);
   const [isSignUpValid, setIsSignUpValid] = useState(false);
 
-  console.log(isLoginValid, isSignUpValid);
+  const isLoginInfoValid = isEmailValid(loginValue.email) && isPasswordValid(loginValue.password);
+  const isSignUpInfoValid = isEmailValid(signUpValue.email) && isPasswordValid(signUpValue.password);
 
   useEffect(() => {
-    isEmailValid(loginValue.email) && isPasswordValid(loginValue.password)
-      ? setIsLoginValid(true)
-      : setIsLoginValid(false);
-
-    isEmailValid(signUpValue.email) && isPasswordValid(signUpValue.password)
-      ? setIsSignUpValid(true)
-      : setIsSignUpValid(false);
+    isLoginInfoValid ? setIsLoginValid(true) : setIsLoginValid(false);
+    isSignUpInfoValid ? setIsSignUpValid(true) : setIsSignUpValid(false);
   }, [loginValue, signUpValue]);
+
+  const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
+
+  const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const responseMessage = await signUp(signUpValue);
+    alert(responseMessage);
+  };
 
   const renderLogin = () => {
     return (
-      <form>
+      <form onSubmit={handleLogin}>
         <h2>로그인</h2>
         <input
           type="text"
@@ -49,14 +62,20 @@ const Auth: React.FC = () => {
             });
           }}
         />
-        {isLoginValid ? <button>로그인</button> : null}
+        <StyledButton type="submit" disabled={!isLoginValid} isValid={isLoginValid}>
+          로그인
+        </StyledButton>
       </form>
     );
   };
 
   const renderSignUp = () => {
     return (
-      <form>
+      <form
+        onSubmit={(e) => {
+          handleSignUp(e);
+        }}
+      >
         <h2>회원가입</h2>
         <input
           type="text"
@@ -78,7 +97,9 @@ const Auth: React.FC = () => {
             });
           }}
         />
-        {isSignUpValid ? <button>회원 가입</button> : null}
+        <StyledButton type="submit" disabled={!isSignUpValid} isValid={isSignUpValid}>
+          회원 가입
+        </StyledButton>
       </form>
     );
   };
