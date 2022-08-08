@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { login, signUp } from '../api/auth';
+import { postLogin, postSignUp } from '../api/auth';
 import { isEmailValid } from '../utils/isEmailValid';
 import { isPasswordValid } from '../utils/isPasswordValid';
 
@@ -39,7 +39,7 @@ const Auth: React.FC = () => {
     }
 
     try {
-      await login(loginValue).then((res) => {
+      await postLogin(loginValue).then((res) => {
         localStorage.setItem('token', res.data.token);
       });
     } catch (error) {
@@ -51,7 +51,7 @@ const Auth: React.FC = () => {
     e.preventDefault();
 
     try {
-      await signUp(signUpValue).then((res) => {
+      await postSignUp(signUpValue).then((res) => {
         localStorage.setItem('token', res.data.token);
       });
     } catch (error) {

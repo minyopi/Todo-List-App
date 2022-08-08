@@ -7,12 +7,12 @@ interface AuthProps {
   password: string;
 }
 
-export const login = (authInfo: AuthProps) => {
+export const postLogin = (authInfo: AuthProps) => {
   const res = axios.post('/users/login', authInfo);
   return res;
 };
 
-export const signUp = (authInfo: AuthProps) => {
+export const postSignUp = (authInfo: AuthProps) => {
   const res = axios.post('/users/create', authInfo);
   return res;
 };
