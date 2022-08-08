@@ -1,5 +1,5 @@
-import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { login, signUp } from '../api/auth';
 import { isEmailValid } from '../utils/isEmailValid';
@@ -15,6 +15,8 @@ interface authProps {
 }
 
 const Auth: React.FC = () => {
+  const navigate = useNavigate();
+
   const [loginValue, setLoginValue] = useState<authProps>({ email: '', password: '' });
   const [signUpValue, setSignUpValue] = useState<authProps>({ email: '', password: '' });
   const [isLoginValid, setIsLoginValid] = useState(false);
@@ -31,10 +33,14 @@ const Auth: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    if (localStorage.getItem('token')) {
+      navigate('/');
+      return;
+    }
+
     try {
       await login(loginValue).then((res) => {
-        Cookies.set('token', res.data.token);
-        console.log(res);
+        localStorage.setItem('token', res.data.token);
       });
     } catch (error) {
       console.error(error);
@@ -46,7 +52,7 @@ const Auth: React.FC = () => {
 
     try {
       await signUp(signUpValue).then((res) => {
-        Cookies.set('token', res.data.token);
+        localStorage.setItem('token', res.data.token);
       });
     } catch (error) {
       console.error(error);
