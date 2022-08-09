@@ -2,17 +2,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { postLogin, postSignUp } from '../api/auth';
-import { isEmailValid } from '../utils/isEmailValid';
-import { isPasswordValid } from '../utils/isPasswordValid';
+import { authProps } from '../typings/auth';
+import { isEmailValid, isPasswordValid } from '../utils/auth';
 
 const StyledButton = styled.button<{ isValid: boolean }>`
   cursor: ${({ isValid }) => (isValid ? 'pointer' : 'not-allowed')};
 `;
-
-interface authProps {
-  email: string;
-  password: string;
-}
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
