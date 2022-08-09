@@ -83,6 +83,7 @@ const TodoList: React.FC = () => {
         <li key={todo.id}>
           {nowEditMode && nowClicked === idx ? (
             <>
+              {/* Edit Mode */}
               <form
                 onSubmit={async (e) => {
                   e.preventDefault();
@@ -118,6 +119,7 @@ const TodoList: React.FC = () => {
             </>
           ) : (
             <>
+              {/* Todo List */}
               <StyledLink to={`/detail/${todo.id}`}>{`- ${todo.title}`}</StyledLink>
               <button
                 onClick={() => {
