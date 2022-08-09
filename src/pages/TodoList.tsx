@@ -3,8 +3,9 @@ import StyledLink from '../styles/common/StyledLink';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMount } from 'react-use';
-import { createTodo, deleteTodoList, getTodo } from '../api/todoList';
+import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../api/todoList';
 import { getTodoResponse } from '../typings/todoList';
+import TodoFormInputs from '../components/todoList/TodoFormInputs';
 
 const StyledTodoListWrapper = styled.div`
   padding: 40px;
@@ -18,10 +19,11 @@ const StyledTodoListWrapper = styled.div`
 const TodoList: React.FC = () => {
   const navigate = useNavigate();
   const authToken = localStorage.getItem('token');
+  const [nowEditMode, setNowEditMode] = useState(false);
+  const [nowClicked, setNowClicked] = useState(0);
   const [todos, setTodos] = useState<getTodoResponse>({ data: [] });
   const [formValue, setFormValue] = useState({ title: '', content: '' });
-
-  console.log(todos);
+  const [editValue, setEditValue] = useState({ title: '', content: '' });
 
   const getTodos = async () => {
     const response = await getTodo();
@@ -53,32 +55,19 @@ const TodoList: React.FC = () => {
           }
         }}
       >
-        {/* Title */}
-        <div>
-          title:
-          <input
-            type="text"
-            value={formValue.title}
-            onChange={(e) => {
-              setFormValue((prev) => {
-                return { ...prev, title: e.target.value };
-              });
-            }}
-          />
-        </div>
-
-        {/* Content */}
-        <div>
-          content:
-          <textarea
-            value={formValue.content}
-            onChange={(e) => {
-              setFormValue((prev) => {
-                return { ...prev, content: e.target.value };
-              });
-            }}
-          />
-        </div>
+        <TodoFormInputs
+          formValue={formValue}
+          onChangeTitle={(e) => {
+            setFormValue((prev) => {
+              return { ...prev, title: e.target.value };
+            });
+          }}
+          onChangeContent={(e) => {
+            setFormValue((prev) => {
+              return { ...prev, content: e.target.value };
+            });
+          }}
+        />
 
         {/* Add Button */}
         <button type="submit">추가하기</button>
@@ -91,19 +80,66 @@ const TodoList: React.FC = () => {
       return;
     }
 
-    const todoList = todos.data.map((todo) => {
+    const todoList = todos.data.map((todo, idx) => {
       return (
-        <li>
-          <StyledLink to={`/detail/${todo.id}`}>{`- ${todo.title}`}</StyledLink>
-          <button>수정</button>
-          <button
-            onClick={async () => {
-              await deleteTodoList(todo.id);
-              await getTodos();
-            }}
-          >
-            삭제
-          </button>
+        <li key={todo.id}>
+          {nowEditMode && nowClicked === idx ? (
+            <>
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+
+                  await updateTodoList(todo.id, editValue);
+                  await getTodos();
+                  setNowEditMode(false);
+                }}
+              >
+                <TodoFormInputs
+                  formValue={editValue}
+                  onChangeTitle={(e) => {
+                    setEditValue((prev) => {
+                      return { ...prev, title: e.target.value };
+                    });
+                  }}
+                  onChangeContent={(e) => {
+                    setEditValue((prev) => {
+                      return { ...prev, content: e.target.value };
+                    });
+                  }}
+                />
+                <button type="submit">수정</button>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setNowEditMode(false);
+                  }}
+                >
+                  취소
+                </button>
+              </form>
+            </>
+          ) : (
+            <>
+              <StyledLink to={`/detail/${todo.id}`}>{`- ${todo.title}`}</StyledLink>
+              <button
+                onClick={() => {
+                  setNowEditMode(true);
+                  setNowClicked(idx);
+                  setEditValue({ title: todo.title, content: todo.content });
+                }}
+              >
+                수정
+              </button>
+              <button
+                onClick={async () => {
+                  await deleteTodoList(todo.id);
+                  await getTodos();
+                }}
+              >
+                삭제
+              </button>
+            </>
+          )}
         </li>
       );
     });
