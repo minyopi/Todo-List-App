@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import StyledLink from '../../styles/common/StyledLink';
+import StyledLink from '../common/StyledLink';
 
 const StyledHeader = styled.header`
   height: 60px;

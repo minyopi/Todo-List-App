@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import StyledLink from '../styles/common/StyledLink';
+import StyledLink from '../components/common/StyledLink';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMount } from 'react-use';
