@@ -14,8 +14,8 @@ function App() {
         <div className="App">
           <Header />
           <Routes>
-            <Route path="/auth" element={<Auth />} />
             <Route path="/" element={<TodoList />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/detail/:id" element={<TodoListDetail />} />
           </Routes>
         </div>
