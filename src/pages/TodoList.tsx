@@ -68,8 +68,6 @@ const TodoList: React.FC = () => {
             });
           }}
         />
-
-        {/* Add Button */}
         <button type="submit">추가하기</button>
       </form>
     );
