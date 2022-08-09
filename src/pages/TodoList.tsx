@@ -3,7 +3,7 @@ import StyledLink from '../styles/common/StyledLink';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMount } from 'react-use';
-import { createTodo, getTodo } from '../api/todoList';
+import { createTodo, deleteTodoList, getTodo } from '../api/todoList';
 import { getTodoResponse } from '../typings/todoList';
 
 const StyledTodoListWrapper = styled.div`
@@ -96,7 +96,14 @@ const TodoList: React.FC = () => {
         <li>
           <StyledLink to={`/detail/${todo.id}`}>{`- ${todo.title}`}</StyledLink>
           <button>수정</button>
-          <button>삭제</button>
+          <button
+            onClick={async () => {
+              await deleteTodoList(todo.id);
+              await getTodos();
+            }}
+          >
+            삭제
+          </button>
         </li>
       );
     });
