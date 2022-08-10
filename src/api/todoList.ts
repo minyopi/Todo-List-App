@@ -22,34 +22,29 @@ const hasAuthToken = () => {
 export const getTodo = () => {
   hasAuthToken();
 
-  const data = axios.get('/todos');
-  return data;
+  return axios.get('/todos');
 };
 
 export const getTodoById = (id: string) => {
   hasAuthToken();
 
-  const data = axios.get(`todos/${id}`);
-  return data;
+  return axios.get(`todos/${id}`);
 };
 
 export const createTodo = (todo: todoParams) => {
   hasAuthToken();
 
-  const data = axios.post('/todos', todo);
-  return data;
+  return axios.post('/todos', todo);
 };
 
 export const updateTodoList = (id: string, todo: todoParams) => {
   hasAuthToken();
 
-  const data = axios.put(`/todos/${id}`, todo);
-  return data;
+  return axios.put(`/todos/${id}`, todo);
 };
 
 export const deleteTodoList = (id: string) => {
   hasAuthToken();
 
-  const data = axios.delete(`/todos/${id}`);
-  return data;
+  return axios.delete(`/todos/${id}`);
 };
