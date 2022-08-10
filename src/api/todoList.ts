@@ -1,4 +1,5 @@
 import axios from 'axios';
+
 const AUTH_TOKEN = localStorage.getItem('token');
 
 if (AUTH_TOKEN) {
@@ -7,7 +8,7 @@ if (AUTH_TOKEN) {
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
-interface todoProps {
+interface todoParams {
   title: string;
   content: string;
 }
@@ -32,14 +33,14 @@ export const getTodoById = (id: string) => {
   return data;
 };
 
-export const createTodo = (todo: todoProps) => {
+export const createTodo = (todo: todoParams) => {
   hasAuthToken();
 
   const data = axios.post('/todos', todo);
   return data;
 };
 
-export const updateTodoList = (id: string, todo: todoProps) => {
+export const updateTodoList = (id: string, todo: todoParams) => {
   hasAuthToken();
 
   const data = axios.put(`/todos/${id}`, todo);
