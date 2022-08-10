@@ -1,7 +1,7 @@
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import { RecoilRoot } from 'recoil';
+import AppRoutes from './App.routes';
 import Header from './components/global/Header';
-import { Auth, TodoList, TodoListDetail } from './pages';
 
 import GlobalStyle from './styles/GlobalStyles';
 import './styles/reset.css';
@@ -13,11 +13,7 @@ function App() {
       <RecoilRoot>
         <div className="App">
           <Header />
-          <Routes>
-            <Route path="/" element={<TodoList />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/detail/:id" element={<TodoListDetail />} />
-          </Routes>
+          <AppRoutes />
         </div>
       </RecoilRoot>
     </BrowserRouter>
