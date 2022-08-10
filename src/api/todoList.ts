@@ -5,7 +5,7 @@ if (AUTH_TOKEN) {
   axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
 }
 
-axios.defaults.baseURL = 'http://localhost:8080';
+axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
 interface todoProps {
   title: string;
