@@ -1,4 +1,5 @@
 import { commonResponse } from './';
+
 export interface authProps {
   email: string;
   password: string;
