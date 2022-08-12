@@ -54,7 +54,7 @@ const Auth: React.FC = () => {
     try {
       await postSignUp(signUpValue).then((res) => {
         localStorage.setItem('token', res.data.token);
-        setAuthToken(res.data.token);
+        setAuthToken({ token: res.data.token });
       });
     } catch (error) {
       console.error(error);
