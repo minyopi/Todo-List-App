@@ -1,6 +1,7 @@
 import { useMount } from 'react-use';
 import { useSetRecoilState } from 'recoil';
 import { authState } from './store/auth';
+import { setAxiosConfig } from './api';
 import AppRoutes from './App.routes';
 import Header from './components/global/Header';
 
@@ -16,6 +17,8 @@ function App() {
       setAuthToken({ token });
     }
   });
+
+  setAxiosConfig();
 
   return (
     <div className="App">
