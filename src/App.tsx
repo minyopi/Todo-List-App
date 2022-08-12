@@ -9,16 +9,15 @@ import './styles/reset.css';
 
 function App() {
   const setAuthToken = useSetRecoilState(authState);
+  const token = localStorage.getItem('token');
 
   useMount(() => {
-    const token = localStorage.getItem('token');
-
     if (token) {
       setAuthToken({ token });
     }
   });
 
-  setAxiosConfig();
+  setAxiosConfig(token);
 
   return (
     <div className="App">
