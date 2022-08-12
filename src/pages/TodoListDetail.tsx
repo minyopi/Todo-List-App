@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { getTodoById } from '../api/todoList';
+import { authState } from '../store/auth';
 import { todoData } from '../typings/todoList';
 
 const StyledTodoDetailWrapper = styled.div`
@@ -17,6 +19,7 @@ const StyledH1 = styled.h1`
 
 const TodoListDetail: React.FC = () => {
   const { id } = useParams();
+  const { token } = useRecoilValue(authState);
 
   const [todoDetail, setTodoDetail] = useState<todoData>();
 
@@ -25,8 +28,8 @@ const TodoListDetail: React.FC = () => {
       return;
     }
 
-    const response = await getTodoById(id);
-    setTodoDetail(response.data.data);
+    const response = await getTodoById(id, token);
+    setTodoDetail(response?.data.data);
   });
 
   return (

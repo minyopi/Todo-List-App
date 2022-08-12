@@ -1,5 +1,7 @@
 import { commonResponse } from './';
 
+export type Token = string | undefined;
+
 export interface todoParams {
   title: string;
   content: string;

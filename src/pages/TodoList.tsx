@@ -1,10 +1,11 @@
 import styled from 'styled-components';
 import StyledLink from '../components/common/StyledLink';
-import { useState } from 'react';
-import { useMount } from 'react-use';
+import { useEffect, useState } from 'react';
 import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../api/todoList';
-import { getTodoResponse } from '../typings/todoList';
 import TodoFormInputs from '../components/todoList/TodoFormInputs';
+import { todoData, Token } from '../typings/todoList';
+import { useRecoilValue } from 'recoil';
+import { authState } from '../store/auth';
 
 const StyledTodoListWrapper = styled.div`
   padding: 40px;
@@ -16,20 +17,22 @@ const StyledTodoListWrapper = styled.div`
 `;
 
 const TodoList: React.FC = () => {
+  const { token } = useRecoilValue(authState);
+
   const [nowEditMode, setNowEditMode] = useState(false);
   const [nowClicked, setNowClicked] = useState(0);
-  const [todos, setTodos] = useState<getTodoResponse>({ data: [] });
+  const [todos, setTodos] = useState<{ data: todoData[] }>();
   const [formValue, setFormValue] = useState({ title: '', content: '' });
   const [editValue, setEditValue] = useState({ title: '', content: '' });
 
-  const getTodos = async () => {
-    const response = await getTodo();
-    setTodos(response.data);
+  const getTodos = async (token: Token) => {
+    const response = await getTodo(token);
+    setTodos(response?.data);
   };
 
-  useMount(async () => {
-    getTodos();
-  });
+  useEffect(() => {
+    getTodos(token);
+  }, [token]);
 
   const renderCreateTodoForm = () => {
     return (
@@ -37,8 +40,8 @@ const TodoList: React.FC = () => {
         onSubmit={async (e) => {
           e.preventDefault();
           try {
-            await createTodo(formValue);
-            await getTodos();
+            await createTodo(formValue, token);
+            await getTodos(token);
             setFormValue({ title: '', content: '' });
           } catch (error) {
             console.error(error);
@@ -64,7 +67,7 @@ const TodoList: React.FC = () => {
   };
 
   const renderTodoList = () => {
-    if (todos.data.length === 0) {
+    if (!todos) {
       return;
     }
 
@@ -78,8 +81,8 @@ const TodoList: React.FC = () => {
                 onSubmit={async (e) => {
                   e.preventDefault();
 
-                  await updateTodoList(todo.id, editValue);
-                  await getTodos();
+                  await updateTodoList(todo.id, editValue, token);
+                  await getTodos(token);
                   setNowEditMode(false);
                 }}
               >
@@ -122,8 +125,9 @@ const TodoList: React.FC = () => {
               </button>
               <button
                 onClick={async () => {
-                  await deleteTodoList(todo.id);
-                  await getTodos();
+                  const res = await deleteTodoList(todo.id, token);
+                  console.log(res);
+                  await getTodos(token);
                 }}
               >
                 삭제
