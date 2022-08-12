@@ -3,9 +3,12 @@ import StyledLink from '../components/common/StyledLink';
 import { useEffect, useState } from 'react';
 import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../api/todoList';
 import TodoFormInputs from '../components/todoList/TodoFormInputs';
-import { todoData, Token } from '../typings/todoList';
 import { useRecoilValue } from 'recoil';
 import { authState } from '../store/auth';
+import { Controller, useForm } from 'react-hook-form';
+
+import type { TodoData, Token } from '../typings/todoList';
+import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
 const StyledTodoListWrapper = styled.div`
   padding: 40px;
@@ -18,11 +21,12 @@ const StyledTodoListWrapper = styled.div`
 
 const TodoList: React.FC = () => {
   const { token } = useRecoilValue(authState);
+  const { control, handleSubmit, getValues, setValue } = useForm();
+  console.log(getValues());
 
   const [nowEditMode, setNowEditMode] = useState(false);
   const [nowClicked, setNowClicked] = useState(0);
-  const [todos, setTodos] = useState<{ data: todoData[] }>();
-  const [formValue, setFormValue] = useState({ title: '', content: '' });
+  const [todos, setTodos] = useState<{ data: TodoData[] }>();
   const [editValue, setEditValue] = useState({ title: '', content: '' });
 
   const getTodos = async (token: Token) => {
@@ -35,32 +39,37 @@ const TodoList: React.FC = () => {
   }, [token]);
 
   const renderCreateTodoForm = () => {
+    const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+      const formValue = { title: values.todoCreateTitle, content: values.todoCreateContent };
+
+      try {
+        await createTodo(formValue, token);
+        await getTodos(token);
+        setValue('todoCreateTitle', '');
+        setValue('todoCreateContent', '');
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
     return (
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          try {
-            await createTodo(formValue, token);
-            await getTodos(token);
-            setFormValue({ title: '', content: '' });
-          } catch (error) {
-            console.error(error);
-          }
-        }}
-      >
-        <TodoFormInputs
-          formValue={formValue}
-          onChangeTitle={(e) => {
-            setFormValue((prev) => {
-              return { ...prev, title: e.target.value };
-            });
-          }}
-          onChangeContent={(e) => {
-            setFormValue((prev) => {
-              return { ...prev, content: e.target.value };
-            });
-          }}
-        />
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          title:
+          <Controller
+            control={control}
+            name="todoCreateTitle"
+            render={({ field }) => <input {...field} defaultValue="" placeholder="할일을 입력해주세요." />}
+          />
+        </div>
+        <div>
+          content:
+          <Controller
+            control={control}
+            name="todoCreateContent"
+            render={({ field }) => <textarea {...field} defaultValue="" placeholder="자세한 내용을 입력해주세요." />}
+          />
+        </div>
         <button type="submit">추가하기</button>
       </form>
     );
