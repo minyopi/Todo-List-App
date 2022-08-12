@@ -14,7 +14,7 @@ function App() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (!token && typeof token !== 'string') {
+    if (!token || typeof token !== 'string') {
       setAuthToken({ token: undefined });
       navigate('/auth');
       alert('로그인이 필요합니다');
