@@ -1,3 +1,4 @@
+import { commonResponse } from './';
 export interface todoParams {
   title: string;
   content: string;
@@ -9,14 +10,6 @@ export interface todoData {
   id: string;
   createdAt: string;
   updatedAt: string;
-}
-
-export interface commonResponse {
-  config: any;
-  headers: any;
-  request: XMLHttpRequest;
-  status: number;
-  statusText: string;
 }
 
 export interface getTodoResponse extends commonResponse {
