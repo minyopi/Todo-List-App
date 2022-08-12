@@ -1,4 +1,4 @@
-export interface commonResponse {
+export interface CommonResponse {
   config: any;
   headers: any;
   request: XMLHttpRequest;

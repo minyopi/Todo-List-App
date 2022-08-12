@@ -1,13 +1,13 @@
-import { commonResponse } from './';
+import { CommonResponse } from './';
 
 export type Token = string | undefined;
 
-export interface todoParams {
+export interface TodoParams {
   title: string;
   content: string;
 }
 
-export interface todoData {
+export interface TodoData {
   title: string;
   content: string;
   id: string;
@@ -15,22 +15,22 @@ export interface todoData {
   updatedAt: string;
 }
 
-export interface getTodoResponse extends commonResponse {
-  data: { data: todoData[] };
+export interface GetTodoResponse extends CommonResponse {
+  data: { data: TodoData[] };
 }
 
-export interface getTodoByIdResponse extends commonResponse {
-  data: { data: todoData };
+export interface GetTodoByIdResponse extends CommonResponse {
+  data: { data: TodoData };
 }
 
-export interface createTodoResponse extends commonResponse {
-  data: { data: todoData };
+export interface CreateTodoResponse extends CommonResponse {
+  data: { data: TodoData };
 }
 
-export interface updateTodoResponse extends commonResponse {
-  data: { data: todoData };
+export interface UpdateTodoResponse extends CommonResponse {
+  data: { data: TodoData };
 }
 
-export interface deleteTodoResponse extends commonResponse {
+export interface DeleteTodoResponse extends CommonResponse {
   data: { data: null };
 }

@@ -1,15 +1,15 @@
 import axios from 'axios';
 import {
-  getTodoResponse,
-  todoParams,
-  createTodoResponse,
-  deleteTodoResponse,
-  getTodoByIdResponse,
-  updateTodoResponse,
+  GetTodoResponse,
+  TodoParams,
+  CreateTodoResponse,
+  DeleteTodoResponse,
+  GetTodoByIdResponse,
+  UpdateTodoResponse,
   Token,
 } from '../typings/todoList';
 
-export const getTodo = (token: Token): Promise<getTodoResponse> | undefined => {
+export const getTodo = (token: Token): Promise<GetTodoResponse> | undefined => {
   if (!token) {
     return;
   }
@@ -17,7 +17,7 @@ export const getTodo = (token: Token): Promise<getTodoResponse> | undefined => {
   return axios.get('/todos');
 };
 
-export const getTodoById = (id: string, token: Token): Promise<getTodoByIdResponse> | undefined => {
+export const getTodoById = (id: string, token: Token): Promise<GetTodoByIdResponse> | undefined => {
   if (!token) {
     return;
   }
@@ -25,7 +25,7 @@ export const getTodoById = (id: string, token: Token): Promise<getTodoByIdRespon
   return axios.get(`todos/${id}`);
 };
 
-export const createTodo = (todo: todoParams, token: Token): Promise<createTodoResponse> | undefined => {
+export const createTodo = (todo: TodoParams, token: Token): Promise<CreateTodoResponse> | undefined => {
   if (!token) {
     return;
   }
@@ -33,7 +33,7 @@ export const createTodo = (todo: todoParams, token: Token): Promise<createTodoRe
   return axios.post('/todos', todo);
 };
 
-export const updateTodoList = (id: string, todo: todoParams, token: Token): Promise<updateTodoResponse> | undefined => {
+export const updateTodoList = (id: string, todo: TodoParams, token: Token): Promise<UpdateTodoResponse> | undefined => {
   if (!token) {
     return;
   }
@@ -41,7 +41,7 @@ export const updateTodoList = (id: string, todo: todoParams, token: Token): Prom
   return axios.put(`/todos/${id}`, todo);
 };
 
-export const deleteTodoList = (id: string, token: Token): Promise<deleteTodoResponse> | undefined => {
+export const deleteTodoList = (id: string, token: Token): Promise<DeleteTodoResponse> | undefined => {
   if (!token) {
     return;
   }

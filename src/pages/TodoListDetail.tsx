@@ -5,7 +5,7 @@ import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 import { getTodoById } from '../api/todoList';
 import { authState } from '../store/auth';
-import { todoData } from '../typings/todoList';
+import { TodoData } from '../typings/todoList';
 
 const StyledTodoDetailWrapper = styled.div`
   padding: 40px;
@@ -21,7 +21,7 @@ const TodoListDetail: React.FC = () => {
   const { id } = useParams();
   const { token } = useRecoilValue(authState);
 
-  const [todoDetail, setTodoDetail] = useState<todoData>();
+  const [todoDetail, setTodoDetail] = useState<TodoData>();
 
   useMount(async () => {
     if (!id) {
