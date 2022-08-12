@@ -1,16 +1,12 @@
 import axios from 'axios';
-import { useRecoilValue } from 'recoil';
-import { authState } from '../store/auth';
 
-const _setAuthToken = () => {
-  const { token } = useRecoilValue(authState);
-
-  if (typeof token === 'string') {
+const _setAuthToken = (token: string | null) => {
+  if (token) {
     axios.defaults.headers.common['Authorization'] = token;
   }
 };
 
-export const setAxiosConfig = () => {
+export const setAxiosConfig = (token: string | null) => {
   axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
-  _setAuthToken();
+  _setAuthToken(token);
 };
