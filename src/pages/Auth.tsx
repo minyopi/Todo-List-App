@@ -45,6 +45,7 @@ const Auth: React.FC = () => {
       navigate('/');
     } catch (error) {
       console.error(error);
+      alert('로그인에 실패했습니다');
     }
   };
 
@@ -58,6 +59,7 @@ const Auth: React.FC = () => {
       });
     } catch (error) {
       console.error(error);
+      alert('회원가입에 실패했습니다');
     }
   };
 
