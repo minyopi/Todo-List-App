@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { postLogin, postSignUp } from '../api/auth';
 import { authState } from '../store/auth';
 import { authProps } from '../typings/auth';
@@ -13,7 +13,7 @@ const StyledButton = styled.button<{ isValid: boolean }>`
 
 const Auth: React.FC = () => {
   const navigate = useNavigate();
-  const [authToken, setAuthToken] = useRecoilState(authState);
+  const setAuthToken = useSetRecoilState(authState);
 
   const [loginValue, setLoginValue] = useState<authProps>({ email: '', password: '' });
   const [signUpValue, setSignUpValue] = useState<authProps>({ email: '', password: '' });
@@ -31,7 +31,7 @@ const Auth: React.FC = () => {
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (authToken) {
+    if (localStorage.getItem('token')) {
       navigate('/');
       return;
     }
@@ -39,8 +39,10 @@ const Auth: React.FC = () => {
     try {
       await postLogin(loginValue).then((res) => {
         localStorage.setItem('token', res.data.token);
-        setAuthToken(res.data.token);
+        setAuthToken({ token: res.data.token });
       });
+
+      navigate('/');
     } catch (error) {
       console.error(error);
     }

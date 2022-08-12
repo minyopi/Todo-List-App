@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import StyledLink from '../components/common/StyledLink';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { useMount } from 'react-use';
 import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../api/todoList';
 import { getTodoResponse } from '../typings/todoList';
@@ -17,8 +16,6 @@ const StyledTodoListWrapper = styled.div`
 `;
 
 const TodoList: React.FC = () => {
-  const navigate = useNavigate();
-  const authToken = localStorage.getItem('token');
   const [nowEditMode, setNowEditMode] = useState(false);
   const [nowClicked, setNowClicked] = useState(0);
   const [todos, setTodos] = useState<getTodoResponse>({ data: [] });
@@ -33,13 +30,6 @@ const TodoList: React.FC = () => {
   useMount(async () => {
     getTodos();
   });
-
-  useEffect(() => {
-    if (!authToken) {
-      alert('로그인이 필요합니다!');
-      navigate('/auth');
-    }
-  }, [authToken]);
 
   const renderCreateTodoForm = () => {
     return (
