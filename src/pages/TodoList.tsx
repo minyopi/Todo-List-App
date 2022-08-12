@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import StyledLink from '../components/common/StyledLink';
 import { useEffect, useState } from 'react';
 import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../api/todoList';
-import TodoFormInputs from '../components/todoList/TodoFormInputs';
 import { useRecoilValue } from 'recoil';
 import { authState } from '../store/auth';
 import { Controller, useForm } from 'react-hook-form';
@@ -21,13 +20,10 @@ const StyledTodoListWrapper = styled.div`
 
 const TodoList: React.FC = () => {
   const { token } = useRecoilValue(authState);
-  const { control, handleSubmit, getValues, setValue } = useForm();
-  console.log(getValues());
-
+  const { control, handleSubmit, setValue } = useForm();
   const [nowEditMode, setNowEditMode] = useState(false);
   const [nowClicked, setNowClicked] = useState(0);
   const [todos, setTodos] = useState<{ data: TodoData[] }>();
-  const [editValue, setEditValue] = useState({ title: '', content: '' });
 
   const getTodos = async (token: Token) => {
     const response = await getTodo(token);
@@ -40,13 +36,13 @@ const TodoList: React.FC = () => {
 
   const renderCreateTodoForm = () => {
     const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-      const formValue = { title: values.todoCreateTitle, content: values.todoCreateContent };
+      const formValue = { title: values.createTitle, content: values.createContent };
 
       try {
         await createTodo(formValue, token);
         await getTodos(token);
-        setValue('todoCreateTitle', '');
-        setValue('todoCreateContent', '');
+        setValue('createTitle', '');
+        setValue('createContent', '');
       } catch (error) {
         console.error(error);
       }
@@ -58,7 +54,7 @@ const TodoList: React.FC = () => {
           title:
           <Controller
             control={control}
-            name="todoCreateTitle"
+            name="createTitle"
             render={({ field }) => <input {...field} defaultValue="" placeholder="할일을 입력해주세요." />}
           />
         </div>
@@ -66,7 +62,7 @@ const TodoList: React.FC = () => {
           content:
           <Controller
             control={control}
-            name="todoCreateContent"
+            name="createContent"
             render={({ field }) => <textarea {...field} defaultValue="" placeholder="자세한 내용을 입력해주세요." />}
           />
         </div>
@@ -81,33 +77,40 @@ const TodoList: React.FC = () => {
     }
 
     const todoList = todos.data.map((todo, idx) => {
+      const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+        const editValue = { title: values.editTitle, content: values.editContent };
+
+        await updateTodoList(todo.id, editValue, token);
+        await getTodos(token);
+        setNowEditMode(false);
+      };
+
       return (
         <li key={todo.id}>
           {nowEditMode && nowClicked === idx ? (
             <>
               {/* Edit Mode */}
-              <form
-                onSubmit={async (e) => {
-                  e.preventDefault();
-
-                  await updateTodoList(todo.id, editValue, token);
-                  await getTodos(token);
-                  setNowEditMode(false);
-                }}
-              >
-                <TodoFormInputs
-                  formValue={editValue}
-                  onChangeTitle={(e) => {
-                    setEditValue((prev) => {
-                      return { ...prev, title: e.target.value };
-                    });
-                  }}
-                  onChangeContent={(e) => {
-                    setEditValue((prev) => {
-                      return { ...prev, content: e.target.value };
-                    });
-                  }}
-                />
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <div>
+                  title:
+                  <Controller
+                    control={control}
+                    name="editTitle"
+                    render={({ field }) => (
+                      <input {...field} defaultValue={todo.title} placeholder="할일을 입력해주세요." />
+                    )}
+                  />
+                </div>
+                <div>
+                  content:
+                  <Controller
+                    control={control}
+                    name="editContent"
+                    render={({ field }) => (
+                      <textarea {...field} defaultValue={todo.content} placeholder="자세한 내용을 입력해주세요." />
+                    )}
+                  />
+                </div>
                 <button type="submit">수정</button>
                 <button
                   type="button"
@@ -127,15 +130,13 @@ const TodoList: React.FC = () => {
                 onClick={() => {
                   setNowEditMode(true);
                   setNowClicked(idx);
-                  setEditValue({ title: todo.title, content: todo.content });
                 }}
               >
                 수정
               </button>
               <button
                 onClick={async () => {
-                  const res = await deleteTodoList(todo.id, token);
-                  console.log(res);
+                  await deleteTodoList(todo.id, token);
                   await getTodos(token);
                 }}
               >
