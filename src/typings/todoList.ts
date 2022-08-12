@@ -1,3 +1,8 @@
+export interface todoParams {
+  title: string;
+  content: string;
+}
+
 export interface todoData {
   title: string;
   content: string;
