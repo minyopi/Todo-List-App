@@ -19,17 +19,23 @@ const StyledTodoListWrapper = styled.div`
 `;
 
 const TodoList: React.FC = () => {
-  const { token } = useRecoilValue(authState);
   const createForm = useForm();
   const editForm = useForm();
+  const { token } = useRecoilValue(authState);
 
   const [nowEditMode, setNowEditMode] = useState(false);
   const [nowClicked, setNowClicked] = useState(0);
-  const [todos, setTodos] = useState<{ data: TodoData[] }>();
+  const [todos, setTodos] = useState<TodoData[]>([]);
 
-  const getTodos = async (token: Token) => {
-    const response = await getTodo(token);
-    setTodos(response?.data);
+  const getTodos = (token: Token) => {
+    try {
+      getTodo(token)?.then((res) => {
+        setTodos(res.data.data);
+      });
+    } catch (error) {
+      console.error(error);
+      alert('할일 불러오기에 실패했습니다.');
+    }
   };
 
   useEffect(() => {
@@ -37,14 +43,15 @@ const TodoList: React.FC = () => {
   }, [token]);
 
   const renderCreateTodoForm = () => {
-    const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+    const onSubmit: SubmitHandler<FieldValues> = (values) => {
       const formValue = { title: values.title, content: values.content };
 
       try {
-        await createTodo(formValue, token);
-        await getTodos(token);
-        createForm.setValue('title', '');
-        createForm.setValue('content', '');
+        createTodo(formValue, token)?.then((res) => {
+          setTodos((prev) => [...prev, res.data.data]);
+          createForm.setValue('title', '');
+          createForm.setValue('content', '');
+        });
       } catch (error) {
         console.error(error);
       }
@@ -80,13 +87,22 @@ const TodoList: React.FC = () => {
       return;
     }
 
-    const showEditForm = (todo: TodoData) => {
+    const showEditForm = (todo: TodoData, idx: number) => {
       const onSubmit: SubmitHandler<FieldValues> = async (values) => {
         const editValue = { title: values.title, content: values.content };
 
-        await updateTodoList(todo.id, editValue, token);
-        await getTodos(token);
-        setNowEditMode(false);
+        try {
+          updateTodoList(todo.id, editValue, token)?.then((res) => {
+            setTodos((prev) => {
+              const newTodos = prev;
+              newTodos[idx] = res.data.data;
+              return newTodos;
+            });
+            setNowEditMode(false);
+          });
+        } catch (error) {
+          console.error(error);
+        }
       };
 
       return (
@@ -97,7 +113,7 @@ const TodoList: React.FC = () => {
               control={editForm.control}
               name="title"
               render={({ field }) => <input {...field} defaultValue={todo.title} placeholder="할일을 입력해주세요." />}
-              rules={{ required: true }}
+              rules={{ minLength: 1 }}
             />
           </div>
           <div>
@@ -108,7 +124,7 @@ const TodoList: React.FC = () => {
               render={({ field }) => (
                 <textarea {...field} defaultValue={todo.content} placeholder="자세한 내용을 입력해주세요." />
               )}
-              rules={{ required: true }}
+              rules={{ minLength: 1 }}
             />
           </div>
           <button type="submit">수정</button>
@@ -138,9 +154,18 @@ const TodoList: React.FC = () => {
             수정
           </button>
           <button
-            onClick={async () => {
-              await deleteTodoList(todo.id, token);
-              await getTodos(token);
+            onClick={() => {
+              try {
+                deleteTodoList(todo.id, token)?.then(() =>
+                  setTodos((prev) => {
+                    const newTodos = [...prev];
+                    newTodos.splice(idx, 1);
+                    return newTodos;
+                  }),
+                );
+              } catch (error) {
+                console.error(error);
+              }
             }}
           >
             삭제
@@ -149,8 +174,10 @@ const TodoList: React.FC = () => {
       );
     };
 
-    const todoList = todos.data.map((todo, idx) => {
-      return <li key={todo.id}>{nowEditMode && nowClicked === idx ? showEditForm(todo) : showTodoList(todo, idx)}</li>;
+    const todoList = todos.map((todo, idx) => {
+      return (
+        <li key={todo.id}>{nowEditMode && nowClicked === idx ? showEditForm(todo, idx) : showTodoList(todo, idx)}</li>
+      );
     });
 
     return todoList;
