@@ -94,7 +94,7 @@ const TodoList: React.FC = () => {
         try {
           updateTodoList(todo.id, editValue, token)?.then((res) => {
             setTodos((prev) => {
-              const newTodos = prev;
+              const newTodos = [...prev];
               newTodos[idx] = res.data.data;
               return newTodos;
             });
