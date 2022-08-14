@@ -143,7 +143,6 @@ const TodoList: React.FC = () => {
     const showTodoList = (todo: TodoData, idx: number) => {
       return (
         <>
-          {/* Todo List */}
           <StyledLink to={`/detail/${todo.id}`}>{`- ${todo.title}`}</StyledLink>
           <button
             onClick={() => {
