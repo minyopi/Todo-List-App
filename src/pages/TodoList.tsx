@@ -124,7 +124,7 @@ const TodoList: React.FC = () => {
             <Controller
               control={editForm.control}
               name="title"
-              render={({ field }) => <input {...field} defaultValue={todo.title} placeholder="할일을 입력해주세요." />}
+              render={({ field }) => <Input {...field} defaultValue={todo.title} placeholder="할일을 입력해주세요." />}
               rules={{ minLength: 1 }}
             />
           </Form.Item>
@@ -133,7 +133,7 @@ const TodoList: React.FC = () => {
               control={editForm.control}
               name="content"
               render={({ field }) => (
-                <textarea {...field} defaultValue={todo.content} placeholder="자세한 내용을 입력해주세요." />
+                <Input.TextArea {...field} defaultValue={todo.content} placeholder="자세한 내용을 입력해주세요." />
               )}
               rules={{ minLength: 1 }}
             />
