@@ -1,14 +1,18 @@
+import styled from 'styled-components';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
 import { useRecoilValue } from 'recoil';
-import styled from 'styled-components';
 import { getTodoById } from '../apis/todoList';
+import Layout from '../components/common/Layout';
+import StyledLink from '../components/common/StyledLink';
 import { authState } from '../store/auth';
-import { TodoData } from '../typings/todoList';
+import { Breadcrumb } from 'antd';
+
+import type { TodoData } from '../typings/todoList';
 
 const StyledTodoDetailWrapper = styled.div`
-  padding: 40px;
+  padding: 40px 0;
 `;
 
 const StyledH1 = styled.h1`
@@ -33,7 +37,16 @@ const TodoListDetail: React.FC = () => {
   });
 
   return (
-    <>
+    <Layout type="center">
+      <Breadcrumb>
+        <Breadcrumb.Item>
+          <StyledLink to="/">Todo List</StyledLink>
+        </Breadcrumb.Item>
+        <Breadcrumb.Item>
+          <StyledLink to={`/detail/${id}`}>{todoDetail?.title}</StyledLink>
+        </Breadcrumb.Item>
+      </Breadcrumb>
+
       {todoDetail ? (
         <StyledTodoDetailWrapper>
           <StyledH1>Detail Page</StyledH1>
@@ -45,7 +58,7 @@ const TodoListDetail: React.FC = () => {
       ) : (
         <div>정보를 불러올 수 없습니다.</div>
       )}
-    </>
+    </Layout>
   );
 };
 

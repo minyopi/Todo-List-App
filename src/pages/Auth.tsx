@@ -15,7 +15,7 @@ const { Title } = Typography;
 const { TabPane } = Tabs;
 
 const StyledFormWrapper = styled.div`
-  padding: 0 20px;
+  padding: 0 40px;
 `;
 
 const StyledErrorMessage = styled.p`

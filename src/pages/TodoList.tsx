@@ -9,12 +9,11 @@ import { Button, Form, Input, List, Typography } from 'antd';
 
 import type { TodoData, Token } from '../typings/todoList';
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
+import Layout from '../components/common/Layout';
 
 const { Title } = Typography;
 
 const StyledTodoListWrapper = styled.div`
-  padding: 40px;
-
   h1 {
     margin-bottom: 16px;
   }
@@ -205,11 +204,13 @@ const TodoList: React.FC = () => {
   };
 
   return (
-    <StyledTodoListWrapper>
-      <Title level={2}>Todo List</Title>
-      <div>{renderCreateTodoForm()}</div>
-      <List>{renderTodoList()}</List>
-    </StyledTodoListWrapper>
+    <Layout type="center">
+      <StyledTodoListWrapper>
+        <Title level={2}>Todo List</Title>
+        <div>{renderCreateTodoForm()}</div>
+        <List>{renderTodoList()}</List>
+      </StyledTodoListWrapper>
+    </Layout>
   );
 };
 
