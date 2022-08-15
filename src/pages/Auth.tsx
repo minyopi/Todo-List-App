@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
-import { postLogin, postSignUp } from '../api/auth';
+import { postLogin, postSignUp } from '../apis/auth';
 import { authState } from '../store/auth';
 import { isEmailValid, isPasswordValid } from '../utils/auth';
 import { Controller, useForm } from 'react-hook-form';

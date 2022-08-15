@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import StyledLink from '../components/common/StyledLink';
 import { useEffect, useState } from 'react';
-import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../api/todoList';
+import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../apis/todoList';
 import { useRecoilValue } from 'recoil';
 import { authState } from '../store/auth';
 import { Controller, useForm } from 'react-hook-form';

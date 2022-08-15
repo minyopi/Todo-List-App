@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
 import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
-import { getTodoById } from '../api/todoList';
+import { getTodoById } from '../apis/todoList';
 import { authState } from '../store/auth';
 import { TodoData } from '../typings/todoList';
 

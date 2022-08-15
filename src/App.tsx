@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { authState } from './store/auth';
-import { setAxiosConfig } from './api';
+import { setAxiosConfig } from './apis';
 import AppRoutes from './App.routes';
 import Header from './components/global/Header';
 
