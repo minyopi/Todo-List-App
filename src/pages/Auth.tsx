@@ -7,6 +7,7 @@ import { isEmailValid, isPasswordValid } from '../utils/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { ErrorMessage } from '@hookform/error-message';
 import { Button, Form, Input, Tabs, Typography } from 'antd';
+import { red } from '@ant-design/colors';
 
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
@@ -19,7 +20,7 @@ const StyledFormWrapper = styled.div`
 
 const StyledErrorMessage = styled.p`
   margin-top: 4px;
-  color: #ff3131;
+  color: ${red.primary};
 `;
 
 const Auth: React.FC = () => {
@@ -27,10 +28,6 @@ const Auth: React.FC = () => {
   const signupForm = useForm();
   const navigate = useNavigate();
   const [authInfo, setAuthInfo] = useRecoilState(authState);
-
-  const handleTabsChange = (key: string) => {
-    console.log(key);
-  };
 
   const renderLoginForm = () => {
     const handleLogin: SubmitHandler<FieldValues> = async (values) => {
@@ -164,7 +161,7 @@ const Auth: React.FC = () => {
 
   return (
     <div>
-      <Tabs centered size="large" defaultActiveKey="1" onChange={handleTabsChange}>
+      <Tabs centered size="large" defaultActiveKey="1">
         <TabPane tab="로그인" key="1">
           {renderLoginForm()}
         </TabPane>
