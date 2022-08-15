@@ -5,6 +5,7 @@ import { postLogin, postSignUp } from '../api/auth';
 import { authState } from '../store/auth';
 import { isEmailValid, isPasswordValid } from '../utils/auth';
 import { Controller, useForm } from 'react-hook-form';
+import { ErrorMessage } from '@hookform/error-message';
 import { Button, Form, Input, Tabs, Typography } from 'antd';
 
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
@@ -15,8 +16,11 @@ const { TabPane } = Tabs;
 const StyledFormWrapper = styled.div`
   padding: 0 20px;
 `;
-const StyledLoginFormWrapper = styled(StyledFormWrapper)``;
-const StyledSignUpFormWrapper = styled(StyledFormWrapper)``;
+
+const StyledErrorMessage = styled.p`
+  margin-top: 4px;
+  color: #ff3131;
+`;
 
 const Auth: React.FC = () => {
   const loginForm = useForm();
@@ -52,7 +56,7 @@ const Auth: React.FC = () => {
     };
 
     return (
-      <StyledLoginFormWrapper>
+      <StyledFormWrapper>
         <Form name="login" autoComplete="off" onFinish={loginForm.handleSubmit(handleLogin)}>
           <Title level={4}>로그인</Title>
           <Form.Item label="Email" name="email">
@@ -62,7 +66,15 @@ const Auth: React.FC = () => {
               render={({ field }) => (
                 <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />
               )}
-              rules={{ required: true, validate: (value) => isEmailValid(value) }}
+              rules={{
+                required: '이메일을 입력해주세요',
+                validate: (value) => isEmailValid(value) || '이메일 형식에 맞게 입력해주세요',
+              }}
+            />
+            <ErrorMessage
+              name="email"
+              errors={loginForm.formState.errors}
+              render={({ message }) => <StyledErrorMessage>{message}</StyledErrorMessage>}
             />
           </Form.Item>
           <Form.Item label="Password" name="password">
@@ -72,7 +84,12 @@ const Auth: React.FC = () => {
               render={({ field }) => (
                 <Input.Password {...field} type="password" defaultValue="" placeholder="비밀번호를 입력해주세요" />
               )}
-              rules={{ required: true, validate: (value) => isPasswordValid(value) }}
+              rules={{ required: true, validate: (value) => isPasswordValid(value) || '8글자 이상 입력해주세요' }}
+            />
+            <ErrorMessage
+              name="password"
+              errors={loginForm.formState.errors}
+              render={({ message }) => <StyledErrorMessage>{message}</StyledErrorMessage>}
             />
           </Form.Item>
           <Form.Item>
@@ -81,7 +98,7 @@ const Auth: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
-      </StyledLoginFormWrapper>
+      </StyledFormWrapper>
     );
   };
 
@@ -102,7 +119,7 @@ const Auth: React.FC = () => {
     };
 
     return (
-      <StyledSignUpFormWrapper>
+      <StyledFormWrapper>
         <Form name="signUp" autoComplete="off" onFinish={signupForm.handleSubmit(handleSignUp)}>
           <Title level={4}>회원가입</Title>
           <Form.Item label="Email" name="email">
@@ -112,7 +129,12 @@ const Auth: React.FC = () => {
               render={({ field }) => (
                 <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />
               )}
-              rules={{ required: true, validate: (value) => isEmailValid(value) }}
+              rules={{ required: true, validate: (value) => isEmailValid(value) || '이메일 형식에 맞게 입력해주세요' }}
+            />
+            <ErrorMessage
+              name="email"
+              errors={signupForm.formState.errors}
+              render={({ message }) => <StyledErrorMessage>{message}</StyledErrorMessage>}
             />
           </Form.Item>
           <Form.Item label="Password" name="password">
@@ -122,7 +144,12 @@ const Auth: React.FC = () => {
               render={({ field }) => (
                 <Input.Password {...field} type="password" defaultValue="" placeholder="비밀번호를 입력해주세요" />
               )}
-              rules={{ required: true, validate: (value) => isPasswordValid(value) }}
+              rules={{ required: true, validate: (value) => isPasswordValid(value) || '8글자 이상 입력해주세요' }}
+            />
+            <ErrorMessage
+              name="password"
+              errors={signupForm.formState.errors}
+              render={({ message }) => <StyledErrorMessage>{message}</StyledErrorMessage>}
             />
           </Form.Item>
           <Form.Item>
@@ -131,7 +158,7 @@ const Auth: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
-      </StyledSignUpFormWrapper>
+      </StyledFormWrapper>
     );
   };
 
