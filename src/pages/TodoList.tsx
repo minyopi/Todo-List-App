@@ -5,17 +5,26 @@ import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../api/todo
 import { useRecoilValue } from 'recoil';
 import { authState } from '../store/auth';
 import { Controller, useForm } from 'react-hook-form';
+import { Button, Form, Input, List, Typography } from 'antd';
 
 import type { TodoData, Token } from '../typings/todoList';
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
+
+const { Title } = Typography;
 
 const StyledTodoListWrapper = styled.div`
   padding: 40px;
 
   h1 {
-    font-size: 20px;
-    font-weight: bold;
+    margin-bottom: 16px;
   }
+`;
+
+const StyledTodoListItemWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 const TodoList: React.FC = () => {
@@ -58,27 +67,31 @@ const TodoList: React.FC = () => {
     };
 
     return (
-      <form onSubmit={createForm.handleSubmit(onSubmit)}>
-        <div>
-          title:
+      <Form onFinish={createForm.handleSubmit(onSubmit)}>
+        <Form.Item label="Title" name="title">
           <Controller
             control={createForm.control}
             name="title"
-            render={({ field }) => <input {...field} defaultValue="" placeholder="할일을 입력해주세요." />}
+            render={({ field }) => <Input type="text" {...field} defaultValue="" placeholder="할일을 입력해주세요." />}
             rules={{ required: true }}
           />
-        </div>
-        <div>
-          content:
+        </Form.Item>
+        <Form.Item label="Content" name="content">
           <Controller
             control={createForm.control}
             name="content"
-            render={({ field }) => <textarea {...field} defaultValue="" placeholder="자세한 내용을 입력해주세요." />}
+            render={({ field }) => (
+              <Input.TextArea {...field} defaultValue="" placeholder="자세한 내용을 입력해주세요." />
+            )}
             rules={{ required: true }}
           />
-        </div>
-        <button type="submit">추가하기</button>
-      </form>
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            추가하기
+          </Button>
+        </Form.Item>
+      </Form>
     );
   };
 
@@ -106,18 +119,16 @@ const TodoList: React.FC = () => {
       };
 
       return (
-        <form onSubmit={editForm.handleSubmit(onSubmit)}>
-          <div>
-            title:
+        <Form onFinish={editForm.handleSubmit(onSubmit)}>
+          <Form.Item label="Title" name="title">
             <Controller
               control={editForm.control}
               name="title"
               render={({ field }) => <input {...field} defaultValue={todo.title} placeholder="할일을 입력해주세요." />}
               rules={{ minLength: 1 }}
             />
-          </div>
-          <div>
-            content:
+          </Form.Item>
+          <Form.Item label="Content" name="content">
             <Controller
               control={editForm.control}
               name="content"
@@ -126,56 +137,67 @@ const TodoList: React.FC = () => {
               )}
               rules={{ minLength: 1 }}
             />
-          </div>
-          <button type="submit">수정</button>
-          <button
-            type="button"
+          </Form.Item>
+          <Button type="primary" htmlType="submit">
+            수정
+          </Button>
+          <Button
+            type="default"
+            htmlType="button"
             onClick={() => {
               setNowEditMode(false);
             }}
           >
             취소
-          </button>
-        </form>
+          </Button>
+        </Form>
       );
     };
 
     const showTodoList = (todo: TodoData, idx: number) => {
       return (
-        <>
-          <StyledLink to={`/detail/${todo.id}`}>{`- ${todo.title}`}</StyledLink>
-          <button
-            onClick={() => {
-              setNowEditMode(true);
-              setNowClicked(idx);
-            }}
-          >
-            수정
-          </button>
-          <button
-            onClick={() => {
-              try {
-                deleteTodoList(todo.id, token)?.then(() =>
-                  setTodos((prev) => {
-                    const newTodos = [...prev];
-                    newTodos.splice(idx, 1);
-                    return newTodos;
-                  }),
-                );
-              } catch (error) {
-                console.error(error);
-              }
-            }}
-          >
-            삭제
-          </button>
-        </>
+        <StyledTodoListItemWrapper>
+          <div>
+            <StyledLink to={`/detail/${todo.id}`}>{`- ${todo.title}`}</StyledLink>
+          </div>
+          <div>
+            <Button
+              type="primary"
+              onClick={() => {
+                setNowEditMode(true);
+                setNowClicked(idx);
+              }}
+            >
+              수정
+            </Button>
+            <Button
+              type="default"
+              onClick={() => {
+                try {
+                  deleteTodoList(todo.id, token)?.then(() =>
+                    setTodos((prev) => {
+                      const newTodos = [...prev];
+                      newTodos.splice(idx, 1);
+                      return newTodos;
+                    }),
+                  );
+                } catch (error) {
+                  console.error(error);
+                }
+              }}
+            >
+              삭제
+            </Button>
+          </div>
+        </StyledTodoListItemWrapper>
       );
     };
 
     const todoList = todos.map((todo, idx) => {
       return (
-        <li key={todo.id}>{nowEditMode && nowClicked === idx ? showEditForm(todo, idx) : showTodoList(todo, idx)}</li>
+        <List.Item key={todo.id}>
+          {nowEditMode && nowClicked === idx ? showEditForm(todo, idx) : showTodoList(todo, idx)}
+        </List.Item>
       );
     });
 
@@ -184,9 +206,9 @@ const TodoList: React.FC = () => {
 
   return (
     <StyledTodoListWrapper>
-      <h1>Todo List</h1>
+      <Title level={2}>Todo List</Title>
       <div>{renderCreateTodoForm()}</div>
-      <ul>{renderTodoList()}</ul>
+      <List>{renderTodoList()}</List>
     </StyledTodoListWrapper>
   );
 };
