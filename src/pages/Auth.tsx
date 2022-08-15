@@ -61,7 +61,7 @@ const Auth: React.FC = () => {
               control={loginForm.control}
               name="email"
               render={({ field }) => (
-                <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />
+                <Input {...field} type="email" defaultValue="" placeholder="이메일을 입력해주세요" />
               )}
               rules={{
                 required: '이메일을 입력해주세요',
@@ -124,7 +124,7 @@ const Auth: React.FC = () => {
               control={signupForm.control}
               name="email"
               render={({ field }) => (
-                <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />
+                <Input {...field} type="email" defaultValue="" placeholder="이메일을 입력해주세요" />
               )}
               rules={{ required: true, validate: (value) => isEmailValid(value) || '이메일 형식에 맞게 입력해주세요' }}
             />
