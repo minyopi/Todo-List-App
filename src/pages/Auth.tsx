@@ -1,3 +1,4 @@
+import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { postLogin, postSignUp } from '../api/auth';
@@ -10,6 +11,12 @@ import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
 const { Title } = Typography;
 const { TabPane } = Tabs;
+
+const StyledFormWrapper = styled.div`
+  padding: 0 20px;
+`;
+const StyledLoginFormWrapper = styled(StyledFormWrapper)``;
+const StyledSignUpFormWrapper = styled(StyledFormWrapper)``;
 
 const Auth: React.FC = () => {
   const loginForm = useForm();
@@ -45,38 +52,36 @@ const Auth: React.FC = () => {
     };
 
     return (
-      <Form
-        name="login"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        autoComplete="off"
-        onFinish={loginForm.handleSubmit(handleLogin)}
-      >
-        <Title level={4}>로그인</Title>
-        <Form.Item label="Email" name="email">
-          <Controller
-            control={loginForm.control}
-            name="email"
-            render={({ field }) => <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />}
-            rules={{ required: true, validate: (value) => isEmailValid(value) }}
-          />
-        </Form.Item>
-        <Form.Item label="Password" name="password">
-          <Controller
-            control={loginForm.control}
-            name="password"
-            render={({ field }) => (
-              <Input.Password {...field} type="password" defaultValue="" placeholder="비밀번호를 입력해주세요" />
-            )}
-            rules={{ required: true, validate: (value) => isPasswordValid(value) }}
-          />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            로그인
-          </Button>
-        </Form.Item>
-      </Form>
+      <StyledLoginFormWrapper>
+        <Form name="login" autoComplete="off" onFinish={loginForm.handleSubmit(handleLogin)}>
+          <Title level={4}>로그인</Title>
+          <Form.Item label="Email" name="email">
+            <Controller
+              control={loginForm.control}
+              name="email"
+              render={({ field }) => (
+                <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />
+              )}
+              rules={{ required: true, validate: (value) => isEmailValid(value) }}
+            />
+          </Form.Item>
+          <Form.Item label="Password" name="password">
+            <Controller
+              control={loginForm.control}
+              name="password"
+              render={({ field }) => (
+                <Input.Password {...field} type="password" defaultValue="" placeholder="비밀번호를 입력해주세요" />
+              )}
+              rules={{ required: true, validate: (value) => isPasswordValid(value) }}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              로그인
+            </Button>
+          </Form.Item>
+        </Form>
+      </StyledLoginFormWrapper>
     );
   };
 
@@ -97,38 +102,36 @@ const Auth: React.FC = () => {
     };
 
     return (
-      <Form
-        name="signUp"
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 16 }}
-        autoComplete="off"
-        onFinish={signupForm.handleSubmit(handleSignUp)}
-      >
-        <Title level={4}>회원가입</Title>
-        <Form.Item label="Email" name="email">
-          <Controller
-            control={signupForm.control}
-            name="email"
-            render={({ field }) => <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />}
-            rules={{ required: true, validate: (value) => isEmailValid(value) }}
-          />
-        </Form.Item>
-        <Form.Item label="Password" name="password">
-          <Controller
-            control={signupForm.control}
-            name="password"
-            render={({ field }) => (
-              <Input.Password {...field} type="password" defaultValue="" placeholder="비밀번호를 입력해주세요" />
-            )}
-            rules={{ required: true, validate: (value) => isPasswordValid(value) }}
-          />
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">
-            회원 가입
-          </Button>
-        </Form.Item>
-      </Form>
+      <StyledSignUpFormWrapper>
+        <Form name="signUp" autoComplete="off" onFinish={signupForm.handleSubmit(handleSignUp)}>
+          <Title level={4}>회원가입</Title>
+          <Form.Item label="Email" name="email">
+            <Controller
+              control={signupForm.control}
+              name="email"
+              render={({ field }) => (
+                <Input {...field} type="text" defaultValue="" placeholder="이메일을 입력해주세요" />
+              )}
+              rules={{ required: true, validate: (value) => isEmailValid(value) }}
+            />
+          </Form.Item>
+          <Form.Item label="Password" name="password">
+            <Controller
+              control={signupForm.control}
+              name="password"
+              render={({ field }) => (
+                <Input.Password {...field} type="password" defaultValue="" placeholder="비밀번호를 입력해주세요" />
+              )}
+              rules={{ required: true, validate: (value) => isPasswordValid(value) }}
+            />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              회원 가입
+            </Button>
+          </Form.Item>
+        </Form>
+      </StyledSignUpFormWrapper>
     );
   };
 
