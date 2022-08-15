@@ -4,7 +4,7 @@ import { useSetRecoilState } from 'recoil';
 import { authState } from './store/auth';
 import { setAxiosConfig } from './apis';
 import AppRoutes from './App.routes';
-import Header from './components/global/Header';
+import Header from './components/common/Header';
 
 import './styles/global.css';
 function App() {
