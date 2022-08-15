@@ -4,10 +4,11 @@ import { postLogin, postSignUp } from '../api/auth';
 import { authState } from '../store/auth';
 import { isEmailValid, isPasswordValid } from '../utils/auth';
 import { Controller, useForm } from 'react-hook-form';
-import { Button, Form, Input, Tabs } from 'antd';
+import { Button, Form, Input, Tabs, Typography } from 'antd';
 
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
+const { Title } = Typography;
 const { TabPane } = Tabs;
 
 const Auth: React.FC = () => {
@@ -51,7 +52,7 @@ const Auth: React.FC = () => {
         autoComplete="off"
         onFinish={loginForm.handleSubmit(handleLogin)}
       >
-        <h2>로그인</h2>
+        <Title level={4}>로그인</Title>
         <Form.Item label="Email" name="email">
           <Controller
             control={loginForm.control}
@@ -103,7 +104,7 @@ const Auth: React.FC = () => {
         autoComplete="off"
         onFinish={signupForm.handleSubmit(handleSignUp)}
       >
-        <h2>회원가입</h2>
+        <Title level={4}>회원가입</Title>
         <Form.Item label="Email" name="email">
           <Controller
             control={signupForm.control}
