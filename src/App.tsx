@@ -7,7 +7,6 @@ import AppRoutes from './App.routes';
 import Header from './components/global/Header';
 
 import './styles/global.css';
-
 function App() {
   const navigate = useNavigate();
   const setAuthToken = useSetRecoilState(authState);
