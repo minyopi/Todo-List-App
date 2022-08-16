@@ -25,13 +25,15 @@ const StyledErrorMessage = styled.p`
 `;
 
 const Auth: React.FC = () => {
+  const navigate = useNavigate();
+
   const loginForm = useForm();
   const signupForm = useForm();
-  const navigate = useNavigate();
-  const [authInfo, setAuthInfo] = useRecoilState(authState);
 
   const loginMutation = useMutation(postLogin);
   const signUpMutation = useMutation(postSignUp);
+
+  const [authInfo, setAuthInfo] = useRecoilState(authState);
 
   const renderLoginForm = () => {
     const handleLogin: SubmitHandler<FieldValues> = async (values) => {

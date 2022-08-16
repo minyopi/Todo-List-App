@@ -28,13 +28,10 @@ const StyledTodoListItemWrapper = styled.div`
 `;
 
 const TodoList: React.FC = () => {
-  const createForm = useForm();
-  const editForm = useForm();
   const { token } = useRecoilValue(authState);
 
-  const [nowEditMode, setNowEditMode] = useState(false);
-  const [nowClicked, setNowClicked] = useState(0);
-  const [todos, setTodos] = useState<TodoData[]>([]);
+  const createForm = useForm();
+  const editForm = useForm();
 
   const getTodosQuery = useQuery('getTodos', getTodos, {
     enabled: false,
@@ -42,6 +39,10 @@ const TodoList: React.FC = () => {
   const createTodoMutation = useMutation(createTodo);
   const editTodoMutation = useMutation(updateTodo);
   const deleteTodoMutation = useMutation(deleteTodo);
+
+  const [nowEditMode, setNowEditMode] = useState(false);
+  const [nowClicked, setNowClicked] = useState(0);
+  const [todos, setTodos] = useState<TodoData[]>([]);
 
   useEffect(() => {
     if (!token) {
