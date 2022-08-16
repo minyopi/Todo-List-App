@@ -1,12 +1,12 @@
 import styled from 'styled-components';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
 import { useRecoilValue } from 'recoil';
 import { getTodoById } from '../apis/todoList';
-import Layout from '../components/common/Layout';
-import StyledLink from '../styles/common/StyledLink';
 import { authState } from '../store/auth';
+import { Layout, Loading } from '../components/common';
+import { StyledLink } from '../styles/common';
 import { Breadcrumb } from 'antd';
 
 import type { TodoData } from '../typings/todoList';
@@ -26,13 +26,13 @@ const TodoListDetail: React.FC = () => {
   const { id } = useParams();
   const { token } = useRecoilValue(authState);
 
-  const { refetch, isFetchedAfterMount } = useQuery('getTodoById', () => getTodoById(id ?? ''), {
+  const { refetch, isFetching } = useQuery('getTodoById', () => getTodoById(id ?? ''), {
     enabled: false,
   });
 
   const [todoDetail, setTodoDetail] = useState<TodoData>();
 
-  useMount(() => {
+  useEffect(() => {
     if (!token || !id) {
       return;
     }
@@ -40,10 +40,10 @@ const TodoListDetail: React.FC = () => {
     refetch().then((res) => {
       setTodoDetail(res.data?.data.data);
     });
-  });
+  }, [token]);
 
-  if (!isFetchedAfterMount) {
-    return <div>Loading...</div>;
+  if (isFetching) {
+    return <Loading />;
   }
 
   return (
