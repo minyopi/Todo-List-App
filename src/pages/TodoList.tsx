@@ -168,6 +168,8 @@ const TodoList: React.FC = () => {
               onClick={() => {
                 setNowEditMode(true);
                 setNowClicked(idx);
+                editForm.setValue('title', todo.title);
+                editForm.setValue('content', todo.content);
               }}
             >
               수정
