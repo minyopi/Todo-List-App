@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import StyledLink from '../components/common/StyledLink';
 import { useEffect, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../apis/todoList';
 import { useRecoilValue } from 'recoil';
 import { authState } from '../store/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Form, Input, List, Typography } from 'antd';
 
-import type { TodoData, Token } from '../typings/todoList';
+import type { TodoData } from '../typings/todoList';
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
 import Layout from '../components/common/Layout';
 
@@ -35,19 +36,18 @@ const TodoList: React.FC = () => {
   const [nowClicked, setNowClicked] = useState(0);
   const [todos, setTodos] = useState<TodoData[]>([]);
 
-  const getTodos = (token: Token) => {
-    try {
-      getTodo(token)?.then((res) => {
-        setTodos(res.data.data);
-      });
-    } catch (error) {
-      console.error(error);
-      alert('할일 불러오기에 실패했습니다.');
-    }
-  };
+  const getTodos = useQuery('getTodos', () => getTodo(token), {
+    enabled: false,
+  });
 
   useEffect(() => {
-    getTodos(token);
+    if (!token) {
+      return;
+    }
+
+    getTodos.refetch().then((res) => {
+      setTodos(res.data?.data.data ?? []);
+    });
   }, [token]);
 
   const renderCreateTodoForm = () => {
