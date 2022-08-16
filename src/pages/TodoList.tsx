@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import StyledLink from '../components/common/StyledLink';
 import { useEffect, useState } from 'react';
 import { useMutation, useQuery } from 'react-query';
-import { createTodo, deleteTodoList, getTodo, updateTodoList } from '../apis/todoList';
+import { createTodo, deleteTodo, getTodos, updateTodo } from '../apis/todoList';
 import { useRecoilValue } from 'recoil';
 import { authState } from '../store/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Form, Input, List, Typography } from 'antd';
 import Layout from '../components/common/Layout';
 
-import type { TodoParams, TodoData } from '../typings/todoList';
+import type { TodoData } from '../typings/todoList';
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
 const { Title } = Typography;
@@ -36,12 +36,12 @@ const TodoList: React.FC = () => {
   const [nowClicked, setNowClicked] = useState(0);
   const [todos, setTodos] = useState<TodoData[]>([]);
 
-  const getTodosQuery = useQuery('getTodos', getTodo, {
+  const getTodosQuery = useQuery('getTodos', getTodos, {
     enabled: false,
   });
   const createTodoMutation = useMutation(createTodo);
-  const editTodoMutation = useMutation(updateTodoList);
-  const deleteTodoMutation = useMutation(deleteTodoList);
+  const editTodoMutation = useMutation(updateTodo);
+  const deleteTodoMutation = useMutation(deleteTodo);
 
   useEffect(() => {
     if (!token) {
@@ -175,7 +175,7 @@ const TodoList: React.FC = () => {
               type="default"
               onClick={() => {
                 deleteTodoMutation.mutate(todo.id, {
-                  onSuccess: (_) => {
+                  onSuccess: () => {
                     setTodos((prev) => {
                       const newTodos = [...prev];
                       newTodos.splice(idx, 1);

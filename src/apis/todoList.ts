@@ -9,7 +9,7 @@ import {
   UpdateTodoResponse,
 } from '../typings/todoList';
 
-export const getTodo = (): Promise<GetTodoResponse> => {
+export const getTodos = (): Promise<GetTodoResponse> => {
   return axios.get('/todos');
 };
 
@@ -21,10 +21,10 @@ export const createTodo = (todo: TodoParams): Promise<CreateTodoResponse> => {
   return axios.post('/todos', todo);
 };
 
-export const updateTodoList = ({ id, todo }: UpdateTodoListParams): Promise<UpdateTodoResponse> => {
+export const updateTodo = ({ id, todo }: UpdateTodoListParams): Promise<UpdateTodoResponse> => {
   return axios.put(`/todos/${id}`, todo);
 };
 
-export const deleteTodoList = (id: string): Promise<DeleteTodoResponse> => {
+export const deleteTodo = (id: string): Promise<DeleteTodoResponse> => {
   return axios.delete(`/todos/${id}`);
 };
