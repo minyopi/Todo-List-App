@@ -89,7 +89,7 @@ const Auth: React.FC = () => {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={loginMutation.isLoading}>
               로그인
             </Button>
           </Form.Item>
@@ -146,7 +146,7 @@ const Auth: React.FC = () => {
             />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button type="primary" htmlType="submit" loading={signUpMutation.isLoading}>
               회원 가입
             </Button>
           </Form.Item>

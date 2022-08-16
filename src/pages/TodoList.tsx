@@ -87,7 +87,7 @@ const TodoList: React.FC = () => {
           />
         </Form.Item>
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={createTodoMutation.isLoading}>
             추가하기
           </Button>
         </Form.Item>
@@ -139,7 +139,7 @@ const TodoList: React.FC = () => {
               rules={{ minLength: 1 }}
             />
           </Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={editTodoMutation.isLoading}>
             수정
           </Button>
           <Button
@@ -174,6 +174,7 @@ const TodoList: React.FC = () => {
             <Button
               type="default"
               onClick={() => {
+                setNowClicked(idx);
                 deleteTodoMutation.mutate(todo.id, {
                   onSuccess: () => {
                     setTodos((prev) => {
@@ -184,6 +185,7 @@ const TodoList: React.FC = () => {
                   },
                 });
               }}
+              loading={nowClicked === idx && deleteTodoMutation.isLoading}
             >
               삭제
             </Button>
