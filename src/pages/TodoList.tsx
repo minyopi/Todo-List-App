@@ -7,7 +7,7 @@ import { Layout } from '../components/common';
 import { createTodo, deleteTodo, getTodos, updateTodo } from '../apis/todoList';
 import { authState } from '../store/auth';
 import { StyledLink } from '../styles/common';
-import { Button, Form, Input, List, Typography } from 'antd';
+import { Button, Form, Input, List, Skeleton, Typography } from 'antd';
 
 import type { TodoData } from '../typings/todoList';
 import type { FieldValues, SubmitHandler } from 'react-hook-form';
@@ -97,10 +97,6 @@ const TodoList: React.FC = () => {
   };
 
   const renderTodoList = () => {
-    if (!todos) {
-      return;
-    }
-
     const showEditForm = (todo: TodoData, idx: number) => {
       const onSubmit: SubmitHandler<FieldValues> = async (values) => {
         const editValue = { title: values.title, content: values.content };
@@ -204,6 +200,19 @@ const TodoList: React.FC = () => {
         </List.Item>
       );
     });
+
+    if (getTodosQuery.isFetching) {
+      return Array(3)
+        .fill('')
+        .map(() => {
+          return (
+            <List.Item>
+              <Skeleton.Input />
+              <Skeleton.Button />
+            </List.Item>
+          );
+        });
+    }
 
     return todoList;
   };
