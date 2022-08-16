@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import { useRecoilValue } from 'recoil';
 import { useMutation, useQuery } from 'react-query';
 import { Controller, useForm } from 'react-hook-form';
-import { StyledLink, Layout } from '../components/common';
+import { Layout } from '../components/common';
 import { createTodo, deleteTodo, getTodos, updateTodo } from '../apis/todoList';
 import { authState } from '../store/auth';
+import { StyledLink } from '../styles/common';
 import { Button, Form, Input, List, Typography } from 'antd';
 
 import type { TodoData } from '../typings/todoList';

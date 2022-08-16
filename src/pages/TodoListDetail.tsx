@@ -5,7 +5,7 @@ import { useMount } from 'react-use';
 import { useRecoilValue } from 'recoil';
 import { getTodoById } from '../apis/todoList';
 import Layout from '../components/common/Layout';
-import StyledLink from '../components/common/StyledLink';
+import StyledLink from '../styles/common/StyledLink';
 import { authState } from '../store/auth';
 import { Breadcrumb } from 'antd';
 
