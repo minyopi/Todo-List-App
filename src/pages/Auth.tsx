@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
+import { useMutation } from 'react-query';
 import { postLogin, postSignUp } from '../apis/auth';
 import { authState } from '../store/auth';
 import { isEmailValid, isPasswordValid } from '../utils/auth';
@@ -29,6 +30,9 @@ const Auth: React.FC = () => {
   const navigate = useNavigate();
   const [authInfo, setAuthInfo] = useRecoilState(authState);
 
+  const loginMutation = useMutation(postLogin);
+  const signUpMutation = useMutation(postSignUp);
+
   const renderLoginForm = () => {
     const handleLogin: SubmitHandler<FieldValues> = async (values) => {
       const loginValue = { email: values.email, password: values.password };
@@ -38,18 +42,13 @@ const Auth: React.FC = () => {
         return;
       }
 
-      try {
-        await postLogin(loginValue).then((res) => {
-          localStorage.setItem('token', res.data.token);
-          setAuthInfo({ token: res.data.token });
+      loginMutation.mutate(loginValue, {
+        onSuccess: (data) => {
+          localStorage.setItem('token', data.data.token);
+          setAuthInfo({ token: data.data.token });
           navigate('/');
-        });
-
-        navigate('/');
-      } catch (error) {
-        console.error(error);
-        alert('로그인에 실패했습니다');
-      }
+        },
+      });
     };
 
     return (
@@ -103,16 +102,13 @@ const Auth: React.FC = () => {
     const handleSignUp: SubmitHandler<FieldValues> = async (values) => {
       const signUpValue = { email: values.email, password: values.password };
 
-      try {
-        await postSignUp(signUpValue).then((res) => {
-          localStorage.setItem('token', res.data.token);
-          setAuthInfo({ token: res.data.token });
+      signUpMutation.mutate(signUpValue, {
+        onSuccess: (data) => {
+          localStorage.setItem('token', data.data.token);
+          setAuthInfo({ token: data.data.token });
           navigate('/');
-        });
-      } catch (error) {
-        console.error(error);
-        alert('회원가입에 실패했습니다');
-      }
+        },
+      });
     };
 
     return (
