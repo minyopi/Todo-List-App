@@ -32,7 +32,7 @@ const TodoListDetail: React.FC = () => {
       return;
     }
 
-    const response = await getTodoById(id, token);
+    const response = await getTodoById(id);
     setTodoDetail(response?.data.data);
   });
 

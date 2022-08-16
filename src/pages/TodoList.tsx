@@ -7,10 +7,10 @@ import { useRecoilValue } from 'recoil';
 import { authState } from '../store/auth';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Form, Input, List, Typography } from 'antd';
-
-import type { TodoData } from '../typings/todoList';
-import type { FieldValues, SubmitHandler } from 'react-hook-form';
 import Layout from '../components/common/Layout';
+
+import type { TodoParams, TodoData } from '../typings/todoList';
+import type { FieldValues, SubmitHandler } from 'react-hook-form';
 
 const { Title } = Typography;
 
@@ -36,7 +36,7 @@ const TodoList: React.FC = () => {
   const [nowClicked, setNowClicked] = useState(0);
   const [todos, setTodos] = useState<TodoData[]>([]);
 
-  const getTodos = useQuery('getTodos', () => getTodo(token), {
+  const getTodos = useQuery('getTodos', getTodo, {
     enabled: false,
   });
 
@@ -53,16 +53,6 @@ const TodoList: React.FC = () => {
   const renderCreateTodoForm = () => {
     const onSubmit: SubmitHandler<FieldValues> = (values) => {
       const formValue = { title: values.title, content: values.content };
-
-      try {
-        createTodo(formValue, token)?.then((res) => {
-          setTodos((prev) => [...prev, res.data.data]);
-          createForm.setValue('title', '');
-          createForm.setValue('content', '');
-        });
-      } catch (error) {
-        console.error(error);
-      }
     };
 
     return (
@@ -104,7 +94,7 @@ const TodoList: React.FC = () => {
         const editValue = { title: values.title, content: values.content };
 
         try {
-          updateTodoList(todo.id, editValue, token)?.then((res) => {
+          updateTodoList(todo.id, editValue)?.then((res) => {
             setTodos((prev) => {
               const newTodos = [...prev];
               newTodos[idx] = res.data.data;
@@ -173,7 +163,7 @@ const TodoList: React.FC = () => {
               type="default"
               onClick={() => {
                 try {
-                  deleteTodoList(todo.id, token)?.then(() =>
+                  deleteTodoList(todo.id)?.then(() =>
                     setTodos((prev) => {
                       const newTodos = [...prev];
                       newTodos.splice(idx, 1);
