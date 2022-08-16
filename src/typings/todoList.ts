@@ -7,6 +7,11 @@ export interface TodoParams {
   content: string;
 }
 
+export interface UpdateTodoListParams {
+  id: string;
+  todo: TodoParams;
+}
+
 export interface TodoData {
   title: string;
   content: string;

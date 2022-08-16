@@ -1,3 +1,4 @@
+import { UpdateTodoListParams } from './../typings/todoList';
 import axios from 'axios';
 import {
   GetTodoResponse,
@@ -20,7 +21,7 @@ export const createTodo = (todo: TodoParams): Promise<CreateTodoResponse> => {
   return axios.post('/todos', todo);
 };
 
-export const updateTodoList = (id: string, todo: TodoParams): Promise<UpdateTodoResponse> => {
+export const updateTodoList = ({ id, todo }: UpdateTodoListParams): Promise<UpdateTodoResponse> => {
   return axios.put(`/todos/${id}`, todo);
 };
 

@@ -36,16 +36,19 @@ const TodoList: React.FC = () => {
   const [nowClicked, setNowClicked] = useState(0);
   const [todos, setTodos] = useState<TodoData[]>([]);
 
-  const getTodos = useQuery('getTodos', getTodo, {
+  const getTodosQuery = useQuery('getTodos', getTodo, {
     enabled: false,
   });
+  const createTodoMutation = useMutation(createTodo);
+  const editTodoMutation = useMutation(updateTodoList);
+  const deleteTodoMutation = useMutation(deleteTodoList);
 
   useEffect(() => {
     if (!token) {
       return;
     }
 
-    getTodos.refetch().then((res) => {
+    getTodosQuery.refetch().then((res) => {
       setTodos(res.data?.data.data ?? []);
     });
   }, [token]);
@@ -53,6 +56,14 @@ const TodoList: React.FC = () => {
   const renderCreateTodoForm = () => {
     const onSubmit: SubmitHandler<FieldValues> = (values) => {
       const formValue = { title: values.title, content: values.content };
+
+      createTodoMutation.mutate(formValue, {
+        onSuccess: (data) => {
+          setTodos((prev) => [...prev, data.data.data]);
+          createForm.setValue('title', '');
+          createForm.setValue('content', '');
+        },
+      });
     };
 
     return (
@@ -93,18 +104,19 @@ const TodoList: React.FC = () => {
       const onSubmit: SubmitHandler<FieldValues> = async (values) => {
         const editValue = { title: values.title, content: values.content };
 
-        try {
-          updateTodoList(todo.id, editValue)?.then((res) => {
-            setTodos((prev) => {
-              const newTodos = [...prev];
-              newTodos[idx] = res.data.data;
-              return newTodos;
-            });
-            setNowEditMode(false);
-          });
-        } catch (error) {
-          console.error(error);
-        }
+        editTodoMutation.mutate(
+          { id: todo.id, todo: editValue },
+          {
+            onSuccess: (data) => {
+              setTodos((prev) => {
+                const newTodos = [...prev];
+                newTodos[idx] = data.data.data;
+                return newTodos;
+              });
+              setNowEditMode(false);
+            },
+          },
+        );
       };
 
       return (
@@ -162,17 +174,15 @@ const TodoList: React.FC = () => {
             <Button
               type="default"
               onClick={() => {
-                try {
-                  deleteTodoList(todo.id)?.then(() =>
+                deleteTodoMutation.mutate(todo.id, {
+                  onSuccess: (_) => {
                     setTodos((prev) => {
                       const newTodos = [...prev];
                       newTodos.splice(idx, 1);
                       return newTodos;
-                    }),
-                  );
-                } catch (error) {
-                  console.error(error);
-                }
+                    });
+                  },
+                });
               }}
             >
               삭제
