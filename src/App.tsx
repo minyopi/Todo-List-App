@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { authState } from './store/auth';
 import { setAxiosConfig } from './apis';
 import AppRoutes from './App.routes';
-import Header from './components/common/Header';
+import { Header } from './components/common';
 
 import './styles/global.css';
 
@@ -19,7 +19,6 @@ function App() {
   useEffect(() => {
     if (!token || typeof token !== 'string') {
       setAuthToken({ token: undefined });
-      alert('로그인이 필요합니다');
       navigate('/auth');
 
       return;
