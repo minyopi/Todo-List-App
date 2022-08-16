@@ -10,6 +10,7 @@ import { authState } from '../store/auth';
 import { Breadcrumb } from 'antd';
 
 import type { TodoData } from '../typings/todoList';
+import { useQuery } from 'react-query';
 
 const StyledTodoDetailWrapper = styled.div`
   padding: 40px 0;
@@ -25,16 +26,25 @@ const TodoListDetail: React.FC = () => {
   const { id } = useParams();
   const { token } = useRecoilValue(authState);
 
+  const { refetch, isFetchedAfterMount } = useQuery('getTodoById', () => getTodoById(id ?? ''), {
+    enabled: false,
+  });
+
   const [todoDetail, setTodoDetail] = useState<TodoData>();
 
-  useMount(async () => {
-    if (!id) {
+  useMount(() => {
+    if (!token || !id) {
       return;
     }
 
-    const response = await getTodoById(id);
-    setTodoDetail(response?.data.data);
+    refetch().then((res) => {
+      setTodoDetail(res.data?.data.data);
+    });
   });
+
+  if (!isFetchedAfterMount) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <Layout type="center">
