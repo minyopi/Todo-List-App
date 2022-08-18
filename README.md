@@ -1,6 +1,29 @@
 # 원티드 프리온보딩 챌린지 프론트엔드 코스 사전과제
 
-## Assignment 1 - Login / SignUp
+## 프로젝트 소개
+### 프로젝트 목적 
+웹 개발의 기본이 되는 CRUD를 올바르게 구현한 Todo List와 로그인, 회원가입을 구현했습니다. <br>
+신입 프론트엔드 개발자로써 실무에 투입 가능한 수준의 코드를 작성하기 위해 프로젝트를 진행했습니다. 실무 수준의 TypeScript 적용과 클린 코드 작성에 주안점을 두고 프로젝트를 진행했습니다.
+
+### 사용 기술 스택
+- TypeScript
+- React hooks + functional components
+- Recoil
+- Styled-component
+- React-hook-form
+- Tanstack query(React Query)
+- Ant Design
+
+## 설치, 환경설정 및 실행 방법
+```
+> yarn
+
+> yarn start # http://local:3000
+```
+
+## 구현 요구 사항 목록
+
+### Assignment 1 - Login / SignUp
 
 - /auth 경로에 로그인 / 회원가입 기능을 개발합니다
   - 로그인, 회원가입을 별도의 경로로 분리해도 무방합니다
@@ -14,7 +37,7 @@
   - [x] 다음 번에 로그인 시 토큰이 존재한다면 루트 경로로 리다이렉트 시켜주세요
   - [x] 어떤 경우든 토큰이 유효하지 않다면 사용자에게 알리고 로그인 페이지로 리다이렉트 시켜주세요
 
-## Assignment 2 - Todo List
+### Assignment 2 - Todo List
 
 - Todo List API를 호출하여 Todo List CRUD 기능을 구현해주세요
   - [x] 목록 / 상세 영역으로 나누어 구현해주세요
@@ -28,3 +51,11 @@
 - 한 페이지 내에서 새로고침 없이 데이터가 정합성을 갖추도록 구현해주세요
 
   - [x] 수정되는 Todo의 내용이 목록에서도 실시간으로 반영되어야 합니다
+  
+  
+## 폴더 구조 설명
+
+## 과제 진행 시 주안점
+
+## 한계점 및 개선 사항 작성
+
