@@ -3,10 +3,12 @@
  * @param email
  */
 
-export const isEmailValid = (email: string) => {
+const isEmailValid = (email: string) => {
   if (!email || typeof email !== 'string') {
     return false;
   }
 
   return email.includes('@') && email.includes('.');
 };
+
+export default isEmailValid;
