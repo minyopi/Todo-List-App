@@ -54,6 +54,24 @@
   
   
 ## 폴더 구조 설명
+```
+.
+├── public
+│   └── images
+└── src
+    ├── apis
+    ├── components
+    │   ├── common
+    │   └── todoList
+    ├── hooks
+    ├── pages
+    ├── store
+    ├── styles
+    │   └── common
+    ├── typings
+    └── utils
+        └── auth
+```
 
 ## 과제 진행 시 주안점
 
