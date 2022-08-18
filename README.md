@@ -77,3 +77,8 @@
 
 ## 한계점 및 개선 사항 작성
 
+## 미리보기
+![스크린샷 2022-08-18 오후 5 10 42](https://user-images.githubusercontent.com/76836967/185344673-4e4756f4-035c-4cdd-b268-8f5c3a08e729.png)
+![스크린샷 2022-08-18 오후 5 11 11](https://user-images.githubusercontent.com/76836967/185344626-fe718084-2913-41d3-aae7-e52e94c446ee.png)
+
+
