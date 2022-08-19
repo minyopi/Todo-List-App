@@ -80,6 +80,7 @@
 ### TypeScript 적용
 ### 클린 코드 작성
 클린 코드 작성위해 이하의 부분을 염두하며 코드를 작성했습니다.
+
 1) 관심사의 분리
 2) 맥락을 이해하기 용이한 변수명 설정
 3) 명령형 프로그래밍
@@ -88,7 +89,11 @@
 ## 한계점 및 개선 사항 작성
 
 ## 미리보기
+### 이미지
 ![스크린샷 2022-08-18 오후 5 10 42](https://user-images.githubusercontent.com/76836967/185344673-4e4756f4-035c-4cdd-b268-8f5c3a08e729.png)
 ![스크린샷 2022-08-18 오후 5 11 11](https://user-images.githubusercontent.com/76836967/185344626-fe718084-2913-41d3-aae7-e52e94c446ee.png)
+
+### 동영상
+![Kapture 2022-08-19 at 18 02 55](https://user-images.githubusercontent.com/76836967/185585173-8edc31e0-ce05-4f99-8f1f-901e5a25c934.gif)
 
 
