@@ -25,7 +25,7 @@ function App() {
     }
 
     setAuthToken({ token });
-  }, [token]);
+  }, [token, navigate, setAuthToken]);
 
   setAxiosConfig(token);
 
