@@ -39,7 +39,7 @@ const TodoListDetail: React.FC = () => {
     refetch().then((res) => {
       setTodoDetail(res.data?.data.data);
     });
-  }, [token]);
+  }, [token, id, refetch]);
 
   if (isFetching) {
     return <Loading />;
