@@ -4,8 +4,8 @@ import { useSetRecoilState } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Header } from './components/common';
 import { authState } from './store/auth';
+import { setAxiosConfig } from './apis/setAxiosConfig';
 import AppRoutes from './App.routes';
-import useSetAxiosConfig from './hooks/useSetAxiosConfig';
 
 import './styles/global.css';
 
@@ -26,7 +26,7 @@ function App() {
     setAuthToken({ token });
   }, [token, navigate, setAuthToken]);
 
-  useSetAxiosConfig(token);
+  setAxiosConfig(token);
 
   return (
     <QueryClientProvider client={queryClient}>
