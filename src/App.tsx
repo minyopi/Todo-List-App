@@ -2,18 +2,17 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSetRecoilState } from 'recoil';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { authState } from './store/auth';
-import { setAxiosConfig } from './apis';
-import AppRoutes from './App.routes';
 import { Header } from './components/common';
+import { authState } from './store/auth';
+import AppRoutes from './App.routes';
+import useSetAxiosConfig from './hooks/useSetAxiosConfig';
 
 import './styles/global.css';
 
 function App() {
   const navigate = useNavigate();
-  const queryClient = new QueryClient();
   const setAuthToken = useSetRecoilState(authState);
-
+  const queryClient = new QueryClient();
   const token = localStorage.getItem('token');
 
   useEffect(() => {
@@ -27,7 +26,7 @@ function App() {
     setAuthToken({ token });
   }, [token, navigate, setAuthToken]);
 
-  setAxiosConfig(token);
+  useSetAxiosConfig(token);
 
   return (
     <QueryClientProvider client={queryClient}>

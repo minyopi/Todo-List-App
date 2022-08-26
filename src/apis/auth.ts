@@ -1,5 +1,6 @@
-import { postLoginResponse, postSignUpResponse } from '../typings/auth';
 import axios from 'axios';
+import { postLoginResponse, postSignUpResponse } from '../typings/auth';
+
 interface AuthParams {
   email: string;
   password: string;
